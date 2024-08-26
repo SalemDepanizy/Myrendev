@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "user" ALTER COLUMN "heure" DROP NOT NULL,
+ALTER COLUMN "heuresup" DROP NOT NULL;

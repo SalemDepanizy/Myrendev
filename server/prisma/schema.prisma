@@ -1,0 +1,435 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MyTriState {
+  TRUE
+  FALSE
+  PENDING
+}
+
+enum Plan {
+  BASIC
+  STARTUP
+  ENTREPRISE
+}
+
+model user {
+  id                        String                @id @default(cuid())
+  name                      String?
+  lastname                  String?
+  phone                     String?
+  phone2                    String?
+  phone3                    String?
+  email                     String                @unique
+  password                  String
+  address                   String?
+  ville                     String?
+  codePostal                String?
+  startDate                 DateTime?
+  contratType               String?
+  etage                     String?
+  interphone                String?
+  code_acces                String?
+  code_acces_supplementaire String?
+  heure                     Int?
+  image                     String?
+  type                      AccountType
+  userType                  UserType?
+  companyName               String?
+  forfait                   Forfait?              @relation(fields: [forfaitId], references: [id], onDelete: Cascade)
+  forfaitId                 String?
+  manager                   String?
+  name_entreprise           String?
+  name_manager              String?
+  phone_entreprise          String?
+  phone_manager             String?
+  createdAt                 DateTime              @default(now())
+  Ownership                 Ownership[]           @relation("owners")
+  clients                   Ownership[]           @relation("users")
+  active                    Boolean               @default(true)
+  VehiculeMonitor           Vehicule[]            @relation("monitor")
+  VehiculeEnreprise         Vehicule[]            @relation("entreprise")
+  resetPasswordToken        String?
+  resetPasswordExpiry       Float?
+  availabilities            Availability[]
+  RendezVous                RendezVous[]
+  DelayedRendezVous         DelayedRendezVous[]
+  Satisfaction              Satisfaction[]
+  SatisfactionReponse       SatisfactionReponse[]
+  clientRendezVous          RendezVous[]          @relation(name: "ClientRendezVous")
+  monitorRendezVous         RendezVous[]          @relation(name: "MonitorRendezVous")
+  clientDelayedRendezVous   DelayedRendezVous[]   @relation(name: "ClientDelayedRendezVous")
+  monitorDelayedRendezVous  DelayedRendezVous[]   @relation(name: "MonitorDelayedRendezVous")
+  disponibilites            Disponibilite[]
+  superpositions            Superposition[]
+  Timeslot                  Timeslot[]
+  Token                     Token[]
+  isSubscribed              Boolean               @default(true)
+  ConfirmedSlot             ConfirmedSlot[]
+  color                     String?
+  Forfait                   Forfait[]             @relation(name: "MonitorInter")
+  File                      File[]
+  Notification              Notification[]
+  title                     String?
+  plan                      Plan?
+  creatorId                 String?
+  creator                   user?                 @relation("CreatedUsers", fields: [creatorId], references: [id])
+  createdUsers              user[]                @relation("CreatedUsers")
+}
+
+model Token {
+  id             String        @id @default(cuid())
+  token          String        @unique
+  email          String
+  isAccessed     Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  expiresAt      DateTime
+  user           user?         @relation(fields: [userId], references: [id])
+  userId         String?
+  choiceClient   ChoiceClient? @relation(fields: [choiceClientId], references: [id])
+  choiceClientId String?
+  slotConfirmed  Boolean       @default(false)
+}
+
+model Ownership {
+  id                String              @id @default(cuid())
+  owner             user                @relation("owners", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId           String
+  ownerName         String?
+  user              user?               @relation("users", fields: [userId], references: [id], onDelete: Cascade)
+  userId            String?
+  vehicule          Vehicule?           @relation(fields: [vehiculeId], references: [id], onDelete: Cascade)
+  forfait           Forfait?            @relation(fields: [forfaitId], references: [id], onDelete: Cascade)
+  vehiculeId        String?
+  forfaitId         String?
+  RendezVous        RendezVous[]
+  DelayedRendezVous DelayedRendezVous[]
+  active            Boolean             @default(true)
+  Notification      Notification[]
+}
+
+enum UserType {
+  Professionnel
+  Particulier
+}
+
+enum AccountType {
+  STUDENTS
+  MONITOR
+  ADMIN
+  COMMERCIAL
+  ENTREPRISE
+}
+
+model Forfait {
+  id                String              @id @default(cuid())
+  name              String
+  heure             Float
+  selectMorePeople  Boolean // Add this line
+  createdAt         DateTime            @default(now())
+  numberOfPeople    Int
+  user              user[]
+  Ownership         Ownership[]
+  ownershipId       String?
+  rendezvous        RendezVous[] // Add this line
+  DelayedRendezVous DelayedRendezVous[]
+  monitor           user?               @relation(name: "MonitorInter", fields: [monitorId], references: [id])
+  monitorId         String?
+}
+
+model Vehicule {
+  id           String       @id @default(cuid())
+  vehicleBrand String
+  plate        String
+  type         VehiculeType
+  owner        Ownership[]
+  vehiculeType String
+  monitor      user?        @relation(name: "monitor", fields: [userId], references: [id], onDelete: Cascade)
+  ownershipId  String?
+  userId       String?
+  entreprise   user         @relation(name: "entreprise", fields: [entrepriseId], references: [id], onDelete: Cascade)
+  entrepriseId String
+  startDate    String?
+  endDate      String?
+  carteGris    String?
+  assurance    String?
+  permis       String?
+  files        File[]
+}
+
+enum VehiculeType {
+  MANUEL
+  AUTOMATIQUE
+}
+
+model Disponibilite {
+  id     String   @id @default(cuid())
+  day    String[]
+  from   String
+  to     String
+  extra  String?
+  userId String
+  user   user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("disponibilites")
+}
+
+model RendezVous {
+  id                  String                @id @default(cuid())
+  title               String
+  dateTime            DateTime
+  description         String?
+  client              user                  @relation(name: "ClientRendezVous", fields: [clientId], references: [id], onDelete: Cascade)
+  clientId            String
+  forfait             Forfait?              @relation(fields: [forfaitId], references: [id], onDelete: Cascade)
+  forfaitId           String?
+  monitor             user                  @relation(name: "MonitorRendezVous", fields: [monitorId], references: [id], onDelete: Cascade)
+  monitorId           String
+  owner               Ownership             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId             String
+  // images              Image[]
+  user                user?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String?
+  creneau             String
+  // Satisfaction Satisfaction[]
+  emailSent           Boolean               @default(false)
+  satisfactionReponse SatisfactionReponse[]
+  Timeslot            Timeslot[]
+  isActivated         Boolean               @default(true)
+  enterpriseName      String
+  creator             String
+  enterpriseId        String
+  enterpriseContact   String[]
+  relationKey         String?
+  isValid             Boolean               @default(false)
+  files               File[]
+  duration            Float?
+  price               String?
+}
+
+model Timeslot {
+  id           String     @id @default(cuid())
+  slot         String
+  userId       String
+  rendezVousId String
+  user         user       @relation(fields: [userId], references: [id])
+  rendezVous   RendezVous @relation(fields: [rendezVousId], references: [id])
+}
+
+model Image {
+  id                String              @id @default(cuid())
+  filename          String // Rename the field to "filename"
+  rendezVousId      String // Remove the @relation directive
+  DelayedRendezVous DelayedRendezVous[]
+}
+
+model Availability {
+  id        String   @id @default(cuid())
+  day       String
+  // start     String
+  // end       String
+  intervals String[]
+  monitor   user     @relation(fields: [monitorId], references: [id], onDelete: Cascade)
+  monitorId String
+}
+
+model Question {
+  id             String         @id @default(cuid())
+  text           String
+  satisfaction   Satisfaction   @relation(fields: [satisfactionId], references: [id], onDelete: Cascade)
+  satisfactionId String
+  rating         Int?
+  QuestionNotes  QuestionNote[]
+  // satisfactionReponses SatisfactionReponse[]
+}
+
+model Satisfaction {
+  id                  String                @id @default(cuid())
+  title               String
+  questions           Question[]
+  comment             String?
+  redirect_url        String?
+  redirect_grade      Int?
+  user                user                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String
+  sent                Boolean               @default(false)
+  satisfactionReponse SatisfactionReponse[]
+}
+
+model Mail {
+  id               String  @id @default(cuid())
+  manualRecipients String?
+  email            String?
+  subject          String?
+  messages         String?
+  file             String? // Le chemin ou l'URL du fichier
+}
+
+model userMail {
+  id       String   @id @default(cuid())
+  messages String[]
+  email    String
+  idSender String
+}
+
+model adminMail {
+  id       String  @id @default(cuid())
+  email    String?
+  subject  String?
+  messages String?
+}
+
+model Superposition {
+  id             String      @id @default(cuid())
+  disabledDates  String[]
+  selectedOption String
+  titre          String
+  comment        String
+  enterpriseId   String
+  userId         String
+  user           user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  myTriState     MyTriState?
+  reqToken       String?
+  file           String?
+
+  @@map("superpositions")
+}
+
+model CorpSetting {
+  id                 String  @id @default(cuid())
+  corpId             String
+  corpData           Int
+  dayMoment          String
+  maxSlots           Int
+  confirmationChoice Boolean
+  numberDays         Int
+  numberWeeks        Int
+}
+
+model SatisfactionReponse {
+  id             String         @id @default(cuid())
+  satisfaction   Satisfaction   @relation(fields: [satisfactionId], references: [id], onDelete: Cascade)
+  satisfactionId String
+  user           user           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  // question        Question      @relation(fields: [questionId], references: [id],onDelete: Cascade)
+  // questionId      String
+  comments       String
+  notegeneral    Float
+  rendezVousId   String
+  rendezVous     RendezVous     @relation(fields: [rendezVousId], references: [id], onDelete: Cascade)
+  QuestionNotes  QuestionNote[]
+  tokenUsageId   String?        @unique
+  tokenUsage     TokenUsage?    @relation(fields: [tokenUsageId], references: [id])
+  createdAt      DateTime       @default(now())
+}
+
+model QuestionNote {
+  id                    String              @id @default(cuid())
+  note                  Float
+  SatisfactionReponse   SatisfactionReponse @relation(fields: [satisfactionReponseId], references: [id], onDelete: Cascade)
+  satisfactionReponseId String
+  Question              Question            @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId            String
+}
+
+model TokenUsage {
+  id                    String               @id @default(cuid())
+  token                 String               @unique
+  used                  Boolean              @default(false)
+  createdAt             DateTime             @default(now())
+  usedAt                DateTime?
+  satisfactionReponse   SatisfactionReponse? @relation
+  satisfactionReponseId String?
+}
+
+model DelayedRendezVous {
+  id          String    @id @default(cuid())
+  title       String
+  // dateTime    DateTime
+  description String?
+  client      user      @relation(name: "ClientDelayedRendezVous", fields: [clientId], references: [id])
+  clientId    String
+  forfait     Forfait?  @relation(fields: [forfaitId], references: [id])
+  forfaitId   String?
+  monitor     user      @relation(name: "MonitorDelayedRendezVous", fields: [monitorId], references: [id])
+  monitorId   String
+  owner       Ownership @relation(fields: [ownerId], references: [id])
+  ownerId     String
+  images      Image[]
+  user        user?     @relation(fields: [userId], references: [id])
+  userId      String?
+  relationKey String
+}
+
+model ChoiceClient {
+  id          String   @id @default(cuid())
+  available   Json
+  key         String
+  days        String
+  date        String
+  token       Token[]
+  relationKey String
+  tempsInter  Float?
+  options     String[]
+  staffIds    String[]
+}
+
+model ConfirmedSlot {
+  id            String   @id @default(cuid())
+  userId        String
+  user          user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  confirmedDate String
+  confirmedTime String // Assuming you might want to store just the time part separately, for flexibility
+  createdAt     DateTime @default(now())
+  relationKey   String
+}
+
+model CodeConfirmation {
+  id           String   @id @default(cuid())
+  enterpriseId String
+  clientEmail  String
+  secretCode   String
+  status       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model File {
+  id               Int         @id @default(autoincrement())
+  filename         String
+  originalFilename String?
+  createdAt        DateTime    @default(now())
+  userId           String
+  user             user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Vehicule         Vehicule?   @relation(fields: [vehiculeId], references: [id])
+  vehiculeId       String?
+  RendezVous       RendezVous? @relation(fields: [rendezVousId], references: [id])
+  rendezVousId     String?
+}
+
+model Notification {
+  id          String    @id @default(cuid())
+  message     String
+  createdAt   DateTime  @default(now())
+  ownershipId String
+  ownership   Ownership @relation(fields: [ownershipId], references: [id], onDelete: Cascade)
+  read        Boolean   @default(false) // Indicates whether the notification has been read
+  user        user?     @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Link {
+  id        String   @id @default(uuid())
+  email     String
+  dates     String[]
+  title     String
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

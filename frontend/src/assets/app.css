@@ -1,0 +1,358 @@
+.react-date-range .rdr-Day--disabled {
+  background-color: #9b1414fb; /* Change this color to your desired color */
+  color: #d33131; /* Change this color to your desired color */
+}
+span.rdrDayNumber {
+  border-radius: 0.5px;
+}
+/* .rdrDayDisabled .rdrDayNumber span {
+        color: red;
+
+    
+} */
+.rdrDayDisabled .rdrDayNumber span {
+  color: white;
+}
+
+button.rdrDayDisabled span.rdrDayNumber {
+  background-color: rgba(128, 128, 128, 0.459);
+  cursor: not-allowed;
+}
+
+/* span.rdrEndEdge{
+    border-radius: 1rem;
+} */
+
+.rdrDayDisabled .rdrInRange,
+.rdrDayDisabled .rdrStartEdge,
+.rdrDayDisabled .rdrEndEdge,
+.rdrDayDisabled .rdrSelected,
+.rdrDayDisabled .rdrDayStartPreview,
+.rdrDayDisabled .rdrDayInPreview,
+.rdrDayDisabled .rdrDayEndPreview {
+  background-color: rgba(128, 128, 128, 0.459);
+}
+
+.rdrMonthsVertical {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.rdrCalendarWrapper {
+  border-radius: 1rem;
+}
+
+.rdrDateDisplayWrapper {
+  background-color: transparent;
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider-horizontal
+  .ant-slider-rail {
+  width: 100%;
+  height: 8px;
+  border-radius: 1rem;
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider-horizontal
+  .ant-slider-track,
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider-horizontal
+  .ant-slider-tracks {
+  height: 8px;
+  /* background-image:linear-gradient(to right, #06b6d4 0%, #06b6d4 50%, #3b82f6 100%); ; */
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider
+  .ant-slider-handle::after {
+  margin-top: 1.5px;
+  height: 10px;
+  width: 10px;
+}
+
+.ant-slider-track.ant-slider-track-2,
+.ant-slider-track.ant-slider-track-4,
+.ant-slider-track.ant-slider-track-6,
+.ant-slider-track.ant-slider-track-8
+{
+  background-color: transparent;
+}
+.ant-slider-handle.ant-slider-handle-2.ant-tooltip-open {
+  background-color: #00000000;
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider:hover
+  .ant-slider-track-4 {
+  background-color: transparent !important;
+}
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider:hover
+  .ant-slider-track-2 {
+  background-color: transparent !important;
+}
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider:hover
+  .ant-slider-track-6 {
+  background-color: transparent !important;
+}
+:where(.css-dev-only-do-not-override-3mqfnx).ant-slider:hover
+  .ant-slider-track-8 {
+  background-color: transparent !important;
+}
+
+input[type="radio"] {
+  appearance: none;
+  width: 20px;
+  height: 20px; 
+  border: 1px solid #999;
+  border-radius: 15%;
+  /* outline: #d33131; */
+  /* box-shadow: 0 0 5px #999; */
+  /* transition: box-shadow 0.3s ease; */
+  cursor: pointer;
+  position: relative;
+  margin-right: 3px;
+}
+
+input[type="radio"]:before {
+  content: "";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 600;
+  border-radius: 10%;
+  
+}
+
+input#hehe::before{
+    align-self: center;
+    justify-content: center;
+}
+
+input[type="radio"]:checked:before {
+    content: "\f00c";
+    position: absolute;
+    margin: 0 0 9px 3px;
+}
+/* 
+.rbc-btn-group{
+  display: none;
+} */
+.rbc-calendar {
+ /* padding-right: 100px; */
+  /* width: 100%; */
+ width: 100vw;
+}
+
+
+.carac{
+/*  
+  width: auto; */
+  display: flex;
+  
+}
+.carac .rbc-btn-group{
+  /* display: none; */
+}
+.sous{
+  width: 100%;
+  /* display: flex;
+  justify-content: center; */
+}
+
+.carac .rbc-calendar {
+padding: 0px 0px 0px 0px; 
+  width: auto;
+}
+
+
+ /* .rbc-toolbar .rbc-btn-group {
+display: none;
+} */
+
+
+/* MyCalendar.css */
+
+.rbc-calendar,
+.rbc-time-view,
+.rbc-timeslot-group,
+.rbc-time-gutter
+ {
+  border: 1px solid #cccccc1a;
+}
+
+.rbc-day-slot .rbc-time-slot {
+border: none
+}
+.rbc-calendar, .rbc-time-view, .rbc-timeslot-group, .rbc-time-gutter {
+  border: 1px solid #cccccc11;
+}
+
+.rbc-time-header-content{
+  border-left: 1px solid #dddddd00;
+} 
+
+.rbc-header {
+  font-size: 1rem;
+  border-bottom: none;
+} 
+
+ /* .rbc-row-content{
+  display: none;
+} */
+
+ .rbc-time-header.rbc-overflowing {
+  border-right: 1px solid #dddddd00;
+} 
+
+.rbc-row .rbc-month-header {
+ display: none;
+}
+
+
+.cece .rbc-event-label {
+  display: none;
+}
+
+
+/*/////////allInOne*/
+
+.allInOne
+ .rbc-event-label{
+  display: none;
+}
+
+.allInOne
+ .rbc-time-view {
+  border: none;
+  background-color: rgba(107, 105, 105, 0.055); /* Couleur de fond légère */
+  padding: 0.5rem; /* Ajout de marge intérieure pour plus d'aération */
+}
+
+/* En-tête */
+/* .allInOne  */
+.rbc-header {
+
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  border-radius: 60px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  align-items: center;
+  margin: 1rem;
+  margin-left: 1rem;
+  color: black; /* Couleur du texte pour contraste */
+}
+.allInOne
+ .rbc-day-slot {
+  border-top: none;
+}
+/* Événements */
+/* .allInOne  */
+.rbc-event {
+
+  border: none;
+  color: #212529; /* Couleur du texte pour contraste */
+  /* border-radius: 10px; */
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem; /* Taille de la police légèrement augmentée */
+  margin-bottom: 0.5rem; /* Espacement entre les événements */
+}
+
+/* Jours sélectionnés */
+/* .allInOne  */
+.rbc-selected {
+  background-color: #28a745; /* Couleur de fond pour les jours sélectionnés */
+  color: #fff; /* Couleur du texte pour contraste */
+}
+
+/* Lien "Continuer" */
+/* .all InOne a {
+  color: red; 
+  text-decoration: none;
+  transition: color 0.3s ease; 
+} */
+
+/* .allInOne  */
+a:hover {
+  color: #0056b3; /* Changement de couleur au survol */
+}
+
+/* .allInOne  */
+.rbc-time-content{
+  background-color: white;
+  border-radius: 2rem 2rem 0 0;
+  padding: 0.51rem;
+  
+}
+
+/* Ajout de bordures arrondies globales */
+.allInOne
+ .rbc-calendar,
+.allInOne
+ .rbc-time-view,
+.allInOne
+ .rbc-timeslot-group,
+.allInOne
+ .rbc-time-gutter,
+.allInOne
+ .rbc-header,
+.allInOne
+ .rbc-event {
+  border: none;
+}
+
+.allInOne
+ .rbc-label {
+  padding: 1rem;
+}
+
+
+/* .allInOne  */
+.rbc-allday-cell{
+  display: none;
+}
+
+.allInOne
+ .rbc-time-header.rbc-overflowing {
+border: none;
+}
+.allInOne
+ .rbc-time-header-content{
+  border: none;
+}
+
+.allInOne
+ .rbc-events-container{
+  border: none;
+}
+
+
+
+.allInOne
+ .rbc-btn-group button:nth-child(4) {
+ display: none;
+}
+
+
+
+.allInOne
+ .rbc-day-slot .rbc-time-slot {
+  border-top: 1px solid #00000018;
+}
+
+
+/* .rbc-slot-selecting {
+  background-color: rgba(0, 125, 228, 0.973) !important;
+} */
+
+.selectable-slot {
+  cursor: pointer;
+  background-color: rgba(29, 124, 226, 0.1);
+}
+
+.non-selectable-slot {
+  cursor: not-allowed;
+  background-color: rgba(247, 45, 45, 0.1);
+}
+
+.without-btn-view 
+.rbc-btn-group button:nth-child(4)
+{
+display: none;
+}
